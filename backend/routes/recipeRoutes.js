@@ -15,7 +15,7 @@ router.route('/').get(protect, getRecipes).post(protect, createRecipe);
 
 router
   .route('/:id')
-  .get(protect, getRecipe)
+  .get(getRecipe)
   .delete(protect, deleteRecipe)
   .put(protect, updateRecipe);
 

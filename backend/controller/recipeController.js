@@ -25,21 +25,21 @@ const getRecipes = asyncHandler(async (req, res) => {
 //access    Private (access with json web token)
 const getRecipe = asyncHandler(async (req, res) => {
   //get the user id in the JWT
-  const user = await User.findById(req.user.id);
-  if (!user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
+  // const user = await User.findById(req.user.id);
+  // if (!user) {
+  //   res.status(401);
+  //   throw new Error('User not found');
+  // }
 
   const recipe = await Recipe.findById(req.params.id);
   if (!recipe) {
     res.status(404);
     throw new Error('Recipe not found');
   }
-  if (recipe.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error('User Not Authorized');
-  }
+  // if (recipe.user.toString() !== req.user.id) {
+  //   res.status(401);
+  //   throw new Error('User Not Authorized');
+  // }
   res.status(200).json(recipe);
 });
 
