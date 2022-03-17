@@ -7,6 +7,7 @@ const {
   getRecipe,
   updateRecipe,
   deleteRecipe,
+  searchRecipes,
 } = require('../controller/recipeController');
 
 const { protect } = require('../middleware/authMiddleware');
@@ -18,5 +19,7 @@ router
   .get(getRecipe)
   .delete(protect, deleteRecipe)
   .put(protect, updateRecipe);
+
+router.route('/search/recipe').post(searchRecipes);
 
 module.exports = router;

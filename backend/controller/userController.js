@@ -82,13 +82,13 @@ const getMe = asyncHandler(async (req, res) => {
 //@desc     Get User name by user id
 //@route    /api/users/user-name
 //access    Private (access with json web token)
-const getUserName = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
   if (!user) {
-    res.status(401);
-    throw new Error('User not found');
+    res.status(404);
+    throw new Error('user not found');
   }
-  res.status(200).json({ name: user.name });
+  res.status(200).json(user);
 });
 
 //generate json web token
@@ -100,5 +100,5 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
-  getUserName,
+  getUser,
 };

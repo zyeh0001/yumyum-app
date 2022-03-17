@@ -20,6 +20,20 @@ const getRecipes = asyncHandler(async (req, res) => {
   //   res.send('getRecipes');
 });
 
+//@desc     Get all recipes by search text
+//@route    GET /api/recipes/search/recipe
+//access    public
+const searchRecipes = asyncHandler(async (req, res) => {
+  const s = req.body.text;
+  console.log(s);
+  const regex = new RegExp(s, 'i'); // i for case insensitive
+  const recipes = await Recipe.find({ title: { $regex: regex } });
+  res.status(200).json(recipes);
+
+  //test
+  // res.send('searchRecipes');
+});
+
 //@desc     Get single recipe
 //@route    GET /api/recipes/:id
 //access    Private (access with json web token)
@@ -94,7 +108,7 @@ const createRecipe = asyncHandler(async (req, res) => {
 });
 
 //@desc     Delete User Ticket
-//@route    DELETE /api/tickets/:id
+//@route    DELETE /api/recipes/:id
 //access    Private (access with json web token)
 const deleteRecipe = asyncHandler(async (req, res) => {
   //get user id in JWT
@@ -112,13 +126,14 @@ const deleteRecipe = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('User Not Authorized');
   }
-
   await recipe.remove();
-  res.status(200).json({ success: true });
+
+  const updatedRecipe = await Recipe.find({ user: req.user.id });
+  res.status(200).json(updatedRecipe);
 });
 
 //@desc     Update User Ticket
-//@route    PUT /api/tickets/:id
+//@route    PUT /api/recipes/:id
 //access    Private (access with json web token)
 const updateRecipe = asyncHandler(async (req, res) => {
   //get the user id in the JWT
@@ -149,4 +164,5 @@ module.exports = {
   createRecipe,
   deleteRecipe,
   updateRecipe,
+  searchRecipes,
 };
